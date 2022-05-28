@@ -111,70 +111,84 @@ class _HomeScreenState extends State<HomeScreen> {
                           case ConnectionState.active:
                             return CircularProgressIndicator();
                           case ConnectionState.done:
-                            return Container(
-                              margin: EdgeInsetsDirectional.all(16),
-                              padding: EdgeInsetsDirectional.all(20),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(32),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 3,
-                                      spreadRadius: 1,
-                                      offset: Offset(0, 1),
-                                    )
-                                  ]),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Quran Aya of the Day",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  Divider(
-                                    color: Colors.black,
-                                    thickness: 0.5,
-                                  ),
-                                  Text(
-                                    snapshot.data!.arText!,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 18),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Text(
-                                    snapshot.data!.enTran!,
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 18,
-                                        fontFamily: 'Kalpurush'),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  RichText(
-                                    text: TextSpan(children: <InlineSpan>[
-                                      WidgetSpan(
-                                        child: Padding(
+                            return _apiServices.isFailed
+                                ? Container(
+                                    child: Text("Check internet"),
+                                  )
+                                : Container(
+                                    margin: EdgeInsetsDirectional.all(16),
+                                    padding: EdgeInsetsDirectional.all(20),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(32),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 3,
+                                            spreadRadius: 1,
+                                            offset: Offset(0, 1),
+                                          )
+                                        ]),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "Quran Aya of the Day",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        Divider(
+                                          color: Colors.black,
+                                          thickness: 0.5,
+                                        ),
+                                        Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            snapshot.data!.surNumber!
-                                                .toString(),
-                                            style: TextStyle(fontSize: 16),
+                                            snapshot.data!.arText!,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                                fontFamily: 'Katibeh'),
+                                            textAlign: TextAlign.center,
                                           ),
                                         ),
-                                      ),
-                                      WidgetSpan(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(snapshot.data!.surEnName!,
-                                              style: TextStyle(fontSize: 16)),
+                                        Text(
+                                          snapshot.data!.enTran!,
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 18,
+                                              fontFamily: 'Kalpurush'),
+                                          textAlign: TextAlign.center,
                                         ),
-                                      ),
-                                    ]),
-                                  ),
-                                ],
-                              ),
-                            );
+                                        RichText(
+                                          text: TextSpan(children: <InlineSpan>[
+                                            WidgetSpan(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  snapshot.data!.surNumber!
+                                                      .toString(),
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                              ),
+                                            ),
+                                            WidgetSpan(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                    snapshot.data!.surEnName!,
+                                                    style: TextStyle(
+                                                        fontSize: 16)),
+                                              ),
+                                            ),
+                                          ]),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                         }
                       },
                     ),

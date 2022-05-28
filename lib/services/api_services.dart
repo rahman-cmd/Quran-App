@@ -13,19 +13,27 @@ import 'package:quran_app/models/translation.dart';
 class ApiServices {
   final endPointUrl = "http://api.alquran.cloud/v1/surah";
   List<Surah> list = [];
+  bool isFailed = false;
 
   Future<AyaOfTheDay> getAyaOfTheDay() async {
+    isFailed = false;
     // for random Aya we need to generate random number
     // (1,6237) from 1 to 6236
     // Random Aya
-    String url =
-        "https://api.alquran.cloud/v1/ayah/${random(1, 6237)}/editions/quran-uthmani,en.asad,bn.bengali";
-    final response = await http.get(Uri.parse(url));
+    try {
+      String url =
+          "https://api.alquran.cloud/v1/ayah/${random(1, 6237)}/editions/quran-uthmani,en.asad,bn.bengali";
+      final response = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      return AyaOfTheDay.fromJSON(json.decode(response.body));
-    } else {
-      print("Failed to load");
+      if (response.statusCode == 200) {
+        return AyaOfTheDay.fromJSON(json.decode(response.body));
+      } else {
+        isFailed = true;
+        print("Failed to load");
+        throw Exception("Failed  to Load Post");
+      }
+    } catch (e) {
+      isFailed = true;
       throw Exception("Failed  to Load Post");
     }
   }
@@ -83,10 +91,8 @@ class ApiServices {
     } else if (translationIndex == 1) {
       lan = "hindi_omari";
     } else if (translationIndex == 2) {
-      lan = "urdu_junagarhi";
-    } else if (translationIndex == 3) {
       lan = "spanish_garcia";
-    } else if (translationIndex == 4) {
+    } else if (translationIndex == 3) {
       lan = "bengali_zakaria";
     }
 

@@ -45,6 +45,10 @@ dependencies:
   just_audio: ^0.9.12
   font_awesome_flutter: any
   flutter_spinkit: ^5.1.0
+  enum_to_string: ^2.0.1
+
+  adhan: ^1.1.16
+  location: ^4.3.0
 
   get:
 

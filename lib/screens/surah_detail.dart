@@ -1,12 +1,13 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:quran_app/constants/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
-
 import '../models/translation.dart';
 import '../services/api_services.dart';
 import '../widgets/custom_translation.dart';
 
-enum Translation { english, hindi, urdu, spanish, bangla }
+enum Translation { english, hindi, spanish, bangla }
 
 class Surahdetail extends StatefulWidget {
   const Surahdetail({Key? key}) : super(key: key);
@@ -18,23 +19,36 @@ class Surahdetail extends StatefulWidget {
 }
 
 class _SurahdetailState extends State<Surahdetail> {
-  ApiServices _apiServices = ApiServices();
+  final ApiServices _apiServices = ApiServices();
   //SolidController _controller = SolidController();
-  Translation? _translation = Translation.urdu;
+  Translation _translation = Translation.bangla;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      initLanguage();
+    });
+    super.initState();
+  }
+
+  void initLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _translation = EnumToString.fromString(
+        Translation.values, prefs.getString("language").toString())!;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(_translation!.index);
-
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
           future: _apiServices.getTranslation(
-              Constants.surahIndex!, _translation!.index),
+              Constants.surahIndex!, _translation.index),
           builder: (BuildContext context,
               AsyncSnapshot<SurahTranslationList> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasData) {
@@ -50,17 +64,18 @@ class _SurahdetailState extends State<Surahdetail> {
                   },
                 ),
               );
-            } else
-              return Center(
+            } else {
+              return const Center(
                 child: Text('Translation Not found'),
               );
+            }
           },
         ),
         bottomSheet: SolidBottomSheet(
           headerBar: Container(
             color: Theme.of(context).primaryColor,
             height: 50,
-            child: Center(
+            child: const Center(
               child: Text(
                 "Swipe me!",
                 style: TextStyle(color: Colors.white),
@@ -79,10 +94,16 @@ class _SurahdetailState extends State<Surahdetail> {
                     leading: Radio<Translation>(
                       value: Translation.english,
                       groupValue: _translation,
-                      onChanged: (Translation? value) {
+                      onChanged: (Translation? value) async {
                         setState(() {
-                          _translation = value;
+                          _translation = value!;
                         });
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setString(
+                            // ignore: deprecated_member_use
+                            "language",
+                            EnumToString.parse(_translation));
                       },
                     ),
                   ),
@@ -91,22 +112,16 @@ class _SurahdetailState extends State<Surahdetail> {
                     leading: Radio<Translation>(
                       value: Translation.hindi,
                       groupValue: _translation,
-                      onChanged: (Translation? value) {
+                      onChanged: (Translation? value) async {
                         setState(() {
-                          _translation = value;
+                          _translation = value!;
                         });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text('Urdu'),
-                    leading: Radio<Translation>(
-                      value: Translation.urdu,
-                      groupValue: _translation,
-                      onChanged: (Translation? value) {
-                        setState(() {
-                          _translation = value;
-                        });
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setString(
+                            // ignore: deprecated_member_use
+                            "language",
+                            EnumToString.parse(_translation));
                       },
                     ),
                   ),
@@ -115,10 +130,16 @@ class _SurahdetailState extends State<Surahdetail> {
                     leading: Radio<Translation>(
                       value: Translation.spanish,
                       groupValue: _translation,
-                      onChanged: (Translation? value) {
+                      onChanged: (Translation? value) async {
                         setState(() {
-                          _translation = value;
+                          _translation = value!;
                         });
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setString(
+                            // ignore: deprecated_member_use
+                            "language",
+                            EnumToString.parse(_translation));
                       },
                     ),
                   ),
@@ -127,10 +148,16 @@ class _SurahdetailState extends State<Surahdetail> {
                     leading: Radio<Translation>(
                       value: Translation.bangla,
                       groupValue: _translation,
-                      onChanged: (Translation? value) {
+                      onChanged: (Translation? value) async {
                         setState(() {
-                          _translation = value;
+                          _translation = value!;
                         });
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setString(
+                            // ignore: deprecated_member_use
+                            "language",
+                            EnumToString.parse(_translation));
                       },
                     ),
                   ),

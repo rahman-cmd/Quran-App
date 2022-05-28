@@ -39,6 +39,7 @@ class TranslationTile extends StatelessWidget {
                 Positioned(
                   top: 3,
                   left: 12,
+                  bottom: 3,
                   child: Container(
                     padding: EdgeInsets.all(6),
                     alignment: Alignment.center,
@@ -46,14 +47,18 @@ class TranslationTile extends StatelessWidget {
                         shape: BoxShape.circle, color: Colors.black),
                     child: Text(
                       surahTranslation.aya!,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ],
             ),
             Container(
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.only(top: 8),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -66,16 +71,18 @@ class TranslationTile extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20),
+                          fontFamily: 'Katibeh',
+                          fontSize: 18),
                     ),
                   ),
                   SizedBox(
                     width: double.infinity,
                     child: Text(
                       surahTranslation.translation!,
-                      textAlign: TextAlign.end,
+                      textAlign: TextAlign.start,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.black45,
+                        fontFamily: 'Kalpurush',
                         fontSize: 18,
                       ),
                     ),
